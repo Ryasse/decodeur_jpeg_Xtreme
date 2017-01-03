@@ -5,7 +5,20 @@ int shortToInt(uint8_t lsb,uint8_t msb)
     return lsb | ( int )( msb << 8 );
 }
 
-int parsingSOF( uint8_t* data, pJPEGDATA jpegData )
+int isFileJPEGFormat(uint8_t* tab_jpeg)
+{
+    uint8_t data1,data2;
+    int test;
+    data1 = tab_jpeg[0];
+    data2 = tab_jpeg[1];
+    if (data1==0xDD && data2==0xD8)
+    {
+        test = 1;
+    }else{test = 0;}
+    return test;
+}
+
+/*int parsingSOF( uint8_t* data, pJPEGDATA jpegData )
 {
     uint16_t SOFIndicator = shortToInt( data[ 0 ], data[ 1 ] );
 
@@ -110,3 +123,18 @@ int buildHuffmanCodes( pDHT pdht )
 
     return NO_ERROR;
 }
+*/
+int parsingDQT(uint8_t* data, pJPEGDATA)
+{
+    uint16_t DQTIndicator = shortToInt( data[0], data[1] );
+    if( DQTIndicator != 0xFFDB )
+    {
+        printf( "Erreur : type de SOF non pris en charge (0x%X)\n", DQTIndicator );
+        return ERROR_DQT;
+    }
+    jpegData->pDQT = ( pDQT )malloc( sizeof( DQT ) );
+    pDQT pdqt = jpegData->pdqt;
+    pdqt->precision = shortToInt( data[2] , data[3] );
+}
+
+int parsingDQT(uint8_t*, pJPEGDATA);
