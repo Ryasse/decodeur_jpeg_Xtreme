@@ -22,10 +22,18 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="headerparsing.c">
+		<Unit filename="common_jpeg.h" />
+		<Unit filename="error.h" />
+		<Unit filename="file_io.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="headerparsing.h" />
+		<Unit filename="file_io.h" />
+		<Unit filename="jpeg_8x8_block.h" />
+		<Unit filename="jpeg_data_stream.h" />
+		<Unit filename="jpeg_header_parser.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="jpeg_header_parser.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
