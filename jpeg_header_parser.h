@@ -131,7 +131,7 @@ typedef struct DefineHuffmanTable DHT;
 typedef struct DefineHuffmanTable* pDHT;
 
 int isFileJPEGFormat(uint8_t*);
-int shortToInt(uint8_t*);
+int shortToInt(uint8_t lsb,uint8_t msb);
 int parsingHeader(uint8_t*,int, pJPEGDATA);
 int parsingSOF(uint8_t*,pJPEGDATA);
 int parsingDQT(uint8_t*, pJPEGDATA);
