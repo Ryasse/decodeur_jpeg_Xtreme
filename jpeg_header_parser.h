@@ -77,11 +77,11 @@ struct DefineQuantizationTable{
  * \struct HuffmanCode parserHeader.h
  * \brief Une structure struct HuffmanCode (HCODE) permet de stocker les informations relatives à un code.
 **/
-struct HuffmanCode{
+typedef struct HuffmanCode{
 	int value;		/*!< valeur/symbole */
 	int nbbits;		/*!< nombre de bits du code */
 	int code16;		/*!< code de Huffman */
-};
+} HuffmanCode;
 
 /**
  * \struct DefineHuffmanTable parserHeader.h

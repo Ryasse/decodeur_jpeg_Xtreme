@@ -100,13 +100,15 @@ int parsingSOS( uint8_t* data, pJPEGDATA jpegData )
     return NO_ERROR;
 }
 
-int buildHuffmanCodes( pDHT pdht )
+int parsingDHT( uint8_t* data, pJPEGDATA jpegData )
 {
+    pDHT pdht = jpegData->dhtHead;
+
     uint16_t DHTIndicator = shortToInt( data[ 0 ], data[ 1 ] );
 
     if( DHTIndicator != 0xFFC4 )
     {
-        printf( "Erreur : identificateur DHT invalide (0x%X)\n", SOSIndicator );
+        printf( "Erreur : identificateur DHT invalide (0x%X)\n", DHTIndicator );
         return ERROR_DHT;
     }
 
@@ -119,12 +121,51 @@ int buildHuffmanCodes( pDHT pdht )
     }
 
     pdht->type = ( data[ 4 ] & 0b00010000 ) >> 4;
+    pdht->id = ( data[ 4 ] & 0b00001111 );
 
+    //Lecture des codes
+    uint32_t currentIndex = 5;
+    int i,j;
+
+    pdht->countSymbols = 0;
+
+    for( i = 0; i < 16; i++ )
+    {
+        pdht->nbSymbols[ i ] = data[ currentIndex++ ];
+        pdht->countSymbols += pdht->nbSymbols[ i ];
+    }
+
+    if( pdht->countSymbols >= 256 || pdht->countSymbols < 0 )
+    {
+        printf( "Erreur DHT : nombre total de symboles superieur a 256 ou negatif (%d)\n", pdht->countSymbols );
+        return ERROR_DHT;
+    }
+
+    pdht->codes = ( HuffmanCode* )malloc( pdht->countSymbols * sizeof( HuffmanCode ) );
+
+    int nbbits = 1;
+
+    for( i = 0, j = 0; i < pdht->countSymbols; i++ )
+    {
+        ///incrementation de la taille du code des qu'on a fait tous les codes d'une taille donnee
+        while( pdht->nbSymbols[ nbbits - 1 ] <= j )
+        {
+            j = 0;
+            nbbits++;
+        }
+
+        pdht->codes[ i ].nbbits = nbbits;
+        pdht->codes[ i ].value = shortToInt( data[ currentIndex ], data[ currentIndex + 1 ] );
+
+        currentIndex++;
+
+        j++;///1 code lu de plus de la taille actuelle
+    }
 
     return NO_ERROR;
 }
 
-int parsingDQT(uint8_t* data, pJPEGDATA)
+int parsingDQT( uint8_t* data, pJPEGDATA jpegData )
 {
     uint16_t DQTIndicator = shortToInt( data[0], data[1] );
     if( DQTIndicator != 0xFFDB )
@@ -132,8 +173,8 @@ int parsingDQT(uint8_t* data, pJPEGDATA)
         printf( "Erreur : type de SOF non pris en charge (0x%X)\n", DQTIndicator );
         return ERROR_DQT;
     }
-    jpegData->pDQT = ( pDQT )malloc( sizeof( DQT ) );
-    pDQT pdqt = jpegData->pdqt;
+    jpegData->dqtHead = ( pDQT )malloc( sizeof( DQT ) );
+    pDQT pdqt = jpegData->dqtHead;
     pdqt->precision = shortToInt( data[2] , data[3] );
 }
 
