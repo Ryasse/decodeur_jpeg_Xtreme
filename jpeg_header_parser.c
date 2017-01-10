@@ -132,8 +132,21 @@ int parsingDQT(uint8_t* data, pJPEGDATA)
         printf( "Erreur : type de SOF non pris en charge (0x%X)\n", DQTIndicator );
         return ERROR_DQT;
     }
-    jpegData->pDQT = ( pDQT )malloc( sizeof( DQT ) );
-    pDQT pdqt = jpegData->pdqt;
-    pdqt->precision = shortToInt( data[2] , data[3] );
+    jpegData->dqtHead = ( dqtHead )malloc( sizeof( DQT ) );
+    dqtHead pdqt = jpegData->pdqt;
+    pdqt->taille = shortToInt( data[2] , data[3] );
+    if (pdqt->taille!=67)
+    {
+        printf("Erreur : Taille non conforme %d",pdqt->taille);
+        return ERROR_DQT;
+    }
+
+    pdqt->precision = (data[4]&0xF0)>>4;
+    pdqt->id = (data[4]&0x0F);
+
+    for( int i=5 ; i<69 ; i++ )
+    {
+        pdqt->qtable[i] = data[i];
+    }
 }
 
