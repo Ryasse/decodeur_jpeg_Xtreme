@@ -18,7 +18,7 @@ int isFileJPEGFormat(uint8_t* tab_jpeg)
     return test;
 }
 
-/*int parsingSOF( uint8_t* data, pJPEGDATA jpegData )
+int parsingSOF( uint8_t* data, pJPEGDATA jpegData )
 {
     uint16_t SOFIndicator = shortToInt( data[ 0 ], data[ 1 ] );
 
@@ -123,7 +123,7 @@ int buildHuffmanCodes( pDHT pdht )
 
     return NO_ERROR;
 }
-*/
+
 int parsingDQT(uint8_t* data, pJPEGDATA)
 {
     uint16_t DQTIndicator = shortToInt( data[0], data[1] );
@@ -137,4 +137,3 @@ int parsingDQT(uint8_t* data, pJPEGDATA)
     pdqt->precision = shortToInt( data[2] , data[3] );
 }
 
-int parsingDQT(uint8_t*, pJPEGDATA);
