@@ -29,6 +29,9 @@
 		</Unit>
 		<Unit filename="file_io.h" />
 		<Unit filename="jpeg_8x8_block.h" />
+		<Unit filename="jpeg_data_stream.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="jpeg_data_stream.h" />
 		<Unit filename="jpeg_header_parser.c">
 			<Option compilerVar="CC" />
