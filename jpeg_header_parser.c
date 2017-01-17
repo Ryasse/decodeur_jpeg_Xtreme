@@ -1,5 +1,7 @@
 #include "jpeg_header_parser.h"
 
+static int nextByteIndex = 0;
+
 int shortToInt(uint8_t lsb,uint8_t msb)
 {
     return lsb | ( int )( msb << 8 );
@@ -15,7 +17,27 @@ int isFileJPEGFormat(uint8_t* tab_jpeg)
     {
         test = 1;
     }else{test = 0;}
+
+    nextByteIndex = 2;
+
     return test;
+}
+
+int parsingHeader( uint8_t* data, int dataSize, pJPEGDATA jpegData)
+{
+    nextByteIndex = 0;
+
+    if( !isFileJPEGFormat( data ) )
+    {
+        printf( "Erreur : fichier jpeg invalide\n" );
+
+        return ERROR_FILE_FORMAT;
+    }
+
+    while( nextByteIndex < dataSize )
+    {
+
+    }
 }
 
 int parsingSOF( uint8_t* data, pJPEGDATA jpegData )
@@ -53,6 +75,8 @@ int parsingSOF( uint8_t* data, pJPEGDATA jpegData )
         psof->components[ i ].vertical_sample_factor = ( data[ currentByte++ ] & 0x0F );
         psof->components[ i ].idQ = data[ currentByte++ ];
     }
+
+    nextByteIndex = currentByte;
 
     return NO_ERROR;
 }
