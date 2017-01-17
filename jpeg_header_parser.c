@@ -36,7 +36,10 @@ int parsingHeader( uint8_t* data, int dataSize, pJPEGDATA jpegData)
 
     while( nextByteIndex < dataSize )
     {
-
+        //
+        //Diviser le DATA en plusieurs morceaux pour les distribuer
+        //dans chaque fonction
+        //
     }
 }
 
