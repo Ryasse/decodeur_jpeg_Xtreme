@@ -190,5 +190,6 @@ int parsingDQT( uint8_t* data, pJPEGDATA jpegData )
     {
         pdqt->qtable[i] = data[i];
     }
-}
 
+    return NO_ERROR;
+}
