@@ -62,6 +62,7 @@ struct StartOfFrame{
  * section DQT. Il faut donc en définir plusieurs pour stocker les différentes sections DQT.
 **/
 struct DefineQuantizationTable{
+    int taille;     /*!Taille de la section qui comprend la section taille, la précision, l'id et la table en zigzag*/
 	int id;			/*!< identifiant de la table de quantification (à associer avec idQ de chaque composante) */
 	int precision;	/*!< precision 8 ou 16 bits */
 	int qtable[64];	/*!< 64 octets ranges en zigzag ayant permis la quantification (division terme à terme) et
